@@ -90,3 +90,11 @@ async function googleLogin(){
         throw error;
     }
 }
+
+// exporting all functions
+export const authService = {
+    signup,
+    login,
+    logout,
+    getCurrentUser
+};
