@@ -151,3 +151,5 @@ src/
   * then we can define routes in our app.jsx using `<Routes> <Routes/>` and `<Route>`
 
 ---
+
+* now in home page we will add a hero component that will be the main page of our website.
