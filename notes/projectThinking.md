@@ -153,3 +153,75 @@ src/
 ---
 
 * now in home page we will add a hero component that will be the main page of our website.
+
+* now so far a basic home page is done -- and now we can focus on functionality part...
+
+---
+
+## creating a axios instance
+
+* now we will create axios instance because to centeralized the api calling and sending token we want to avoid send token every time and writing the base url every time.
+* now Axios is a promise-based HTTP client for JavaScript (works in browser + Node.js). that lets us to make requests like GET, POST, PUT, DELETE to a backend API.
+* a simple example --
+
+    ```js
+    import axios from "axios";
+
+    // Simple GET request
+    const response = await axios.get("http://localhost:3000/api/users");
+    console.log(response.data);
+
+    // Simple POST request
+    const response2 = await axios.post("http://localhost:3000/api/login", {
+    email: "test@example.com",
+    password: "123456"
+    });
+    console.log(response2.data);
+
+    ```
+
+* now we will use interceptors so these are nothing but the middleware that axios provide us one is `Request Interceptors` and another is `Response Interceptors`
+* now the request interceptor will run before the request is sent and it add like **Authorization token to headers , Log/debug requests and Modify request body and etc**
+
+* example how we are attaching token if it exist in local storage
+
+    ```js
+    api.interceptors.request.use(function (config) {
+        console.log("Outgoing Request:", config);
+
+        // Example: Add token if available
+        const user = JSON.parse(localStorage.getItem("authUser"));
+        if (user?.token) {
+            config.headers.Authorization = "Bearer " + user.token;
+        }
+
+        return config; // Must return config
+    });
+
+    ```
+
+* `Response Interceptors` as the name suggest this middleware runs once the response is recived and we can do something like **Handling errors globally (401 → logout) , Transforming response data and Retrying failed requests and so on**
+
+* handing a error that user is loged out or not
+
+    ```js
+    api.interceptors.response.use(
+        function (response) {
+            console.log("Response received:", response);
+            return response; // Must return response
+        },
+        function (error) {
+            if (error.response?.status === 401) {
+                console.warn("Unauthorized → Redirect to login");
+                localStorage.removeItem("authUser");
+                window.location.href = "/login";
+            }
+            return Promise.reject(error);
+        }
+    );
+
+    ```
+
+* now the flow is `Request Interceptor runs (attach token, modify config) ==> Request is sent to server ==> Server responds ==> Response Interceptor runs (check errors, transform data) ==> our code gets the final response.data`
+
+---
