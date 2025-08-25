@@ -39,4 +39,20 @@ async function login(credentials){
 }
 
 
+// (3) logout user
+
+async function logout(){
+    try{
+        const response=await api.post('/auth/logout');
+
+        // returning the data
+        return response.data
+    }catch(error){
+        console.log("error occured in logut api calling -- check auth service and error is : ",error);
+
+        // throwing erro back 
+        throw error;
+    }
+}
+
 
