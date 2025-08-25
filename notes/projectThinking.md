@@ -120,3 +120,14 @@ src/
 
   * see on the home page we will show a nav bar -- dar and light theme we will see --
   * then a profile section on the right corner- and then a hero section with some description and CTA button for login and signup etc.
+
+  * ### (1) Navbar
+
+  * the navbar we will do something like this --
+
+    ```text
+    ------------------------------------------------------------
+    | [Logo + Brand]   [Links: Home | Features | Pricing]   [ThemeToggle | Auth/Profile] |
+    ------------------------------------------------------------
+
+    ```
