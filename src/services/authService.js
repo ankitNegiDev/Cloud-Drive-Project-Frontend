@@ -4,7 +4,7 @@
 // here userData will be sent by the caller and it will generaly contain name , email , pass , avatar url etc.
 
 import api from '../utils/axiosInstance.jsx';
-export async function signup (userData){
+async function signup (userData){
     try{
         // calling the api for signup
         const response=await api.post('/auth/signup',userData);
@@ -18,4 +18,5 @@ export async function signup (userData){
         throw error;
     }
 }
+
 
