@@ -69,3 +69,8 @@
     ```
 
 ---
+
+## Strarting the frontend of cloud drive
+
+* first we will see how many pages we need then - how many components and so on.
+* also we need t odo beardcrum navigation so we will see how we can handel it..
