@@ -224,4 +224,14 @@ src/
 
 * now the flow is `Request Interceptor runs (attach token, modify config) ==> Request is sent to server ==> Server responds ==> Response Interceptor runs (check errors, transform data) ==> our code gets the final response.data`
 
+* axios.interceptors.request.use(onFulfilled, onRejected) so we need to pass these two function here.
+
+---
+
+* now for showing toast we are using react-hot-toast
+
+    ```bash
+    npm install react-hot-toast
+    ```
+
 ---

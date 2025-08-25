@@ -3,12 +3,16 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Layout from './component/Layout/Layout.jsx'
 import Home from './pages/Home.jsx'
+import { Toaster } from 'react-hot-toast';
+
+
 
 function App() {
 
     return (
         <>
             {/* <h1 className='bg-amber-300 m-10 text-center text-xl'>this is setup to test the tailwind</h1> */}
+            <Toaster position="top-center" reverseOrder={false} />
             <Routes>
                 <Route path='/' element={<Layout/>}>
                     {/* these will render inside <Outlet /> */}
