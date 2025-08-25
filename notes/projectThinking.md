@@ -74,3 +74,49 @@
 
 * first we will see how many pages we need then - how many components and so on.
 * also we need t odo beardcrum navigation so we will see how we can handel it..
+
+* first we will need auth page - or login or signup (create account)
+* then we need a dashboard page.
+* then we need a upload modal kind of thing.
+* may be a preview kind of thing
+* then a sharing modal.
+* then a trash page and a profile page for edit delete etc.
+
+---
+
+* some how it will look like this
+
+```text
+src/
+ ├─ pages/
+ │   ├─ Auth/
+ │   │   ├─ Login.jsx
+ │   │   ├─ Signup.jsx
+ │   │   └─ ForgotPassword.jsx
+ │   ├─ Dashboard.jsx
+ │   ├─ Shared.jsx
+ │   ├─ Trash.jsx
+ │   ├─ Profile.jsx
+ │   └─ FileView.jsx  (for viewing/opening a file)
+ │
+ ├─ components/
+ │   ├─ Navbar.jsx
+ │   ├─ Sidebar.jsx
+ │   ├─ Breadcrumbs.jsx
+ │   ├─ FileCard.jsx
+ │   ├─ UploadModal.jsx
+ │   └─ ShareModal.jsx
+ │
+ ├─ utils/
+ │   ├─ api.js   (axios instance with interceptors)
+ │   └─ auth.js  (helper functions: getUser, logout, etc.)
+ │
+ ├─ App.jsx      (main router + layout wrapper)
+ └─ index.jsx    (entry point)
+
+```
+
+* ## (1) Home page
+
+  * see on the home page we will show a nav bar -- dar and light theme we will see --
+  * then a profile section on the right corner- and then a hero section with some description and CTA button for login and signup etc.
