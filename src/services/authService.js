@@ -12,11 +12,31 @@ async function signup (userData){
         // now returning the repsosne back from where it is called (context/component)
         return response.data;
     }catch(error){
-        console.log("error occured in singup api calling -- check auth service");
+        console.log("error occured in singup api calling -- check auth service and error is : ",error);
         
         // now throwing error back from where it is called (context/component)
         throw error;
     }
 }
+
+
+// (2) login user
+
+async function login(credentials){
+    try{
+        // calling api
+        const response=await api.post('/auth/login',credentials);
+
+        // returning response back from where itis clled (component/contenxt)
+        return response.data;
+
+    }catch(error){
+        console.log("error occured in login api calling -- check auth sercie and error is : ",error);
+
+        // throwing error back either component/context
+        throw error;
+    }
+}
+
 
 
