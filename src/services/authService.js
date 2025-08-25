@@ -73,3 +73,20 @@ async function getCurrentUser(){
     }
 }
 
+// (5) google login
+
+async function googleLogin(){
+    try{
+        // calling api
+        const response=await api.get('/auth/google');
+
+        // returning the repsonse
+        return response.data;
+        
+    }catch(error){
+        console.log("error occured in google login api calling -- check auth service and error is : ",error);
+
+        // throwing erro rback
+        throw error;
+    }
+}
