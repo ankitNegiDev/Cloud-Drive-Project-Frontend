@@ -55,4 +55,21 @@ async function logout(){
     }
 }
 
+// (4) get current user info
+
+async function getCurrentUser(){
+    try{
+        // calling api
+        const response=await api.get('/auth/me');
+
+        // returning the respone
+        return response.data;
+
+    }catch(error){
+        console.log("error occured in getCurrentUser api calling check auth service and eror is : ",error);
+
+        // throw ing eror back
+        throw error;
+    }
+}
 
