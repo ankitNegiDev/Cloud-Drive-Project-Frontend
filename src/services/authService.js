@@ -96,5 +96,6 @@ export const authService = {
     signup,
     login,
     logout,
-    getCurrentUser
+    getCurrentUser,
+    googleLogin
 };
