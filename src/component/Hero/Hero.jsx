@@ -5,7 +5,7 @@ function Hero() {
         <main>
 
 
-            <section className="w-full bg-gray-900 py-20 border-2 border-red-400 p-8">
+            <section className="w-full bg-gray-900 py-20 p-8">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
 
                     {/* Left: Text */}
