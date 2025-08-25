@@ -131,3 +131,23 @@ src/
     ------------------------------------------------------------
 
     ```
+
+  * for icons we are using lucide react.
+  * `<Outlet />` is like a placeholder that tells React Router “render the child route’s component here.”
+  * we created layout componet for only a centered layout. and where using outlet we render component/pages dynamically based on where we are -- if we are on home page then render homepage and etc.
+
+---
+
+* ### Routes in React
+
+  * now if we want to use routes in react then we need to install react-router-dom library.
+
+    ```bash
+    npm install react-router-dom
+
+    ```
+
+  * Then we need to wrap our entire app in `<BrowserRouter>` (usually in main.jsx or index.jsx). now it makes routing work everywhere inside our app.
+  * then we can define routes in our app.jsx using `<Routes> <Routes/>` and `<Route>`
+
+---
