@@ -264,7 +264,7 @@ src/
 
 ---
 
-* the resonse we got after user signup successfully 
+* the resonse we got after user signup successfully
 
 ```json
 {success: true, message: 'User signedUp successfully', response: {…}}
