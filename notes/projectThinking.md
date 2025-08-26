@@ -261,3 +261,130 @@ src/
 * ***third thing -- if we didn't check toekn expiray here then -- what will happen is when user is in local storage with expired token -- the user still remians loged in and when user hit any protected routes like upload or delte files then automactically the backend throw the error that invalid token and our axios response intercptor will get 401 and it will loged out user and --- user will be like what just happend ?? ... so better to check toekn expiry here when app load so that we can ask user to loged in even before doing any api call..***
 
 * now i guess we need to create multiple provider so we are going to create **Provider composer**
+
+---
+
+* the resonse we got after user signup successfully 
+
+```json
+{success: true, message: 'User signedUp successfully', response: {…}}
+message
+: 
+"User signedUp successfully"
+response
+: 
+profile
+: 
+{avatarUrl: 'avatars/1756211403512_Sonal Gharti.jpg'}
+user
+: 
+app_metadata
+: 
+{provider: 'email', providers: Array(1)}
+aud
+: 
+"authenticated"
+confirmation_sent_at
+: 
+"2025-08-26T13:31:52.611496301Z"
+created_at
+: 
+"2025-08-26T13:31:52.542169Z"
+email
+: 
+"bingolive9104@gmail.com"
+id
+: 
+"433528a5-9bcd-485b-8417-90ea038bc989"
+identities
+: 
+[{…}]
+is_anonymous
+: 
+false
+phone
+: 
+""
+role
+: 
+"authenticated"
+updated_at
+: 
+"2025-08-26T13:31:55.330126Z"
+user_metadata
+: 
+{email: 'bingolive9104@gmail.com', email_verified: false, phone_verified: false, sub: '433528a5-9bcd-485b-8417-90ea038bc989'}
+[[Prototype]]
+: 
+Object
+[[Prototype]]
+: 
+Object
+success
+: 
+true
+[[Prototype]]
+: 
+Object
+```
+
+* in post man
+
+```json
+{
+    "success": true,
+    "message": "User signedUp successfully",
+    "response": {
+        "user": {
+            "id": "997e4cb6-1ba9-4b68-a35f-ef5c901b7d8a",
+            "aud": "authenticated",
+            "role": "authenticated",
+            "email": "ankitnegi9104@gmail.com",
+            "phone": "",
+            "confirmation_sent_at": "2025-08-26T13:31:00.503920264Z",
+            "app_metadata": {
+                "provider": "email",
+                "providers": [
+                    "email"
+                ]
+            },
+            "user_metadata": {
+                "email": "ankitnegi9104@gmail.com",
+                "email_verified": false,
+                "phone_verified": false,
+                "sub": "997e4cb6-1ba9-4b68-a35f-ef5c901b7d8a"
+            },
+            "identities": [
+                {
+                    "identity_id": "6a1c3a8b-0320-42e4-a01f-d514f4e88ca0",
+                    "id": "997e4cb6-1ba9-4b68-a35f-ef5c901b7d8a",
+                    "user_id": "997e4cb6-1ba9-4b68-a35f-ef5c901b7d8a",
+                    "identity_data": {
+                        "email": "ankitnegi9104@gmail.com",
+                        "email_verified": false,
+                        "phone_verified": false,
+                        "sub": "997e4cb6-1ba9-4b68-a35f-ef5c901b7d8a"
+                    },
+                    "provider": "email",
+                    "last_sign_in_at": "2025-08-26T13:31:00.476131135Z",
+                    "created_at": "2025-08-26T13:31:00.476197Z",
+                    "updated_at": "2025-08-26T13:31:00.476197Z",
+                    "email": "ankitnegi9104@gmail.com"
+                }
+            ],
+            "created_at": "2025-08-26T13:31:00.439599Z",
+            "updated_at": "2025-08-26T13:31:02.957576Z",
+            "is_anonymous": false
+        },
+        "profile": {
+            "fullName": "bingopari",
+            "avatarUrl": "https://res.cloudinary.com/dyg3mh5wg/image/upload/v1755585491/main-sample.png"
+        }
+    }
+}
+```
+
+* ## Email verification flow
+
+* see when user signup successfully we redirect user to plse verifiy email page -- then supabase send a mail where -- /email-verifed route -- this route need to be created in frontned -- and when user open it -- we will re-direct it to -- /login only when email is verified if not we will re-direct user to verify email page -- keep in mind for this we need the supabase client in frontend also -- we can do it in backend -- by creating a simple route for email-verification and we call this api
+* we just need to figure out -- how i can change the template and set the confirmation email open on the **email-verified route** we just need to fix this means when user open the email confirmation mail and open the link this link should land on this route and our setup is done. for eamil verification and we can focus on login page.
