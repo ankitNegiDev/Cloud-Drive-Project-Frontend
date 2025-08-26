@@ -240,3 +240,9 @@ src/
 
 * now we need to create a service layer or a file where our re-usable function for login , singup , logout, getting current user etc will be written and these function will actually hit our backen api using the axios instance that we create like `api.post('/auth/sigup')` something like this. and offcos these function will return the request resposne which is then collected by there where these function are called so that we don't have to put api calling logic inside the component and by doing this we maintain the clean code and sepration of concern..
 * but we need to add three routes in our backend auth router-- since we are not calling supabase directly from frontend i want the flow is like -- frotnend call my backend and my backnd call supabase.
+
+---
+
+## Auth context
+
+* now we will setup the auth context with a provider so that we can have user info in a centeralized store and any component needed it -- they can access it directly..
