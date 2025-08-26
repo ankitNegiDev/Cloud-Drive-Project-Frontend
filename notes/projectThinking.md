@@ -253,3 +253,11 @@ src/
 
 * first create a folder inside src -- as context and inside it -- create  a file authContext.jsx
 * then wrap the app component with authprovider - since we are using the custom provider so we will wrap our app component with it -- but if we are not using any custom provider then we can use AuthContext.provider for wrapping our app component.
+
+* **now when the app load then auth provider will mount and on mounting we need to check is user exist in local sotrage -- if yes then we need to set it in user state -- so that user don't have to do login again..**
+
+* *what if the toekn is expired then user will still be loged in -- but we don't want that -- so for this we had the axios intercptor which will loged out user if he do any api call with that expired token -- secondly we can add a token validation here in auth provider that even if user is in localstorage and token is expired we will show user have to loged in toekn is expired.*
+
+* ***third thing -- if we didn't check toekn expiray here then -- what will happen is when user is in local storage with expired token -- the user still remians loged in and when user hit any protected routes like upload or delte files then automactically the backend throw the error that invalid token and our axios response intercptor will get 401 and it will loged out user and --- user will be like what just happend ?? ... so better to check toekn expiry here when app load so that we can ask user to loged in even before doing any api call..***
+
+* now i guess we need to create multiple provider so we are going to create **Provider composer**
