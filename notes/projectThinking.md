@@ -246,3 +246,10 @@ src/
 ## Auth context
 
 * now we will setup the auth context with a provider so that we can have user info in a centeralized store and any component needed it -- they can access it directly..
+
+---
+
+## Setup for context
+
+* first create a folder inside src -- as context and inside it -- create  a file authContext.jsx
+* then wrap the app component with authprovider - since we are using the custom provider so we will wrap our app component with it -- but if we are not using any custom provider then we can use AuthContext.provider for wrapping our app component.
