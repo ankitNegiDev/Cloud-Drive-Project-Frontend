@@ -196,6 +196,7 @@ export function AuthProvider({ children }){
     // (4) Google login using Supabase OAuth
     async function googleLogin() {
         try {
+            // calling supabase from frontend -- for google loged in
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: "google",
             });
