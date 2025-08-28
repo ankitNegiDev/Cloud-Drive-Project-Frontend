@@ -199,6 +199,9 @@ export function AuthProvider({ children }){
             // calling supabase from frontend -- for google loged in
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: "google",
+                options: {
+                    redirectTo: `${window.location.origin}/auth-callback`
+                }
             });
 
             if (error) {
