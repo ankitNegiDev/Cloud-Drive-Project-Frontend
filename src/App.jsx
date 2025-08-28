@@ -4,6 +4,12 @@ import './App.css'
 import Layout from './component/Layout/Layout.jsx'
 import Home from './pages/Home.jsx'
 import { Toaster } from 'react-hot-toast';
+import Login from './pages/Login.jsx';
+import Signup from './pages/Signup.jsx';
+import VerifyEmail from './pages/VerifyEmail.jsx';
+import EmailVerified from './pages/EmailVerified.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import AuthCallback from './pages/AuthCallback.jsx';
 
 
 
@@ -19,8 +25,20 @@ function App() {
                     <Route index element={<Home />} />
                     {/* <Route path="about" element={<AboutPage />} /> */}
                     {/* <Route path="contact" element={<ContactPage />} /> */}
-                    {/* <Route path="login" element={<LoginPage />} />  */}
+                    <Route path='dashboard' element={<Dashboard />} />
+                    {/* <Route path="/auth/v1/callback" element={<AuthCallback />} /> */}
+                    {/* <Route path="/auth-callback" element={<h1>Callback Page Hit</h1>} /> */}
+
+
                 </Route>
+                <Route path="login" element={<Login />} />
+                <Route path='signup' element={<Signup />} />
+                <Route path="verify-email" element={<VerifyEmail />} />
+                <Route path="email-verified" element={<EmailVerified />} />
+                {/* <Route path='dashboard' element={<Dashboard />} /> */}
+                <Route path="/auth-callback" element={<AuthCallback />} />
+
+
             </Routes>
         </>
     )

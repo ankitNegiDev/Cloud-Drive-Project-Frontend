@@ -386,5 +386,123 @@ Object
 
 * ## Email verification flow
 
-* see when user signup successfully we redirect user to plse verifiy email page -- then supabase send a mail where -- /email-verifed route -- this route need to be created in frontned -- and when user open it -- we will re-direct it to -- /login only when email is verified if not we will re-direct user to verify email page -- keep in mind for this we need the supabase client in frontend also -- we can do it in backend -- by creating a simple route for email-verification and we call this api
+* see when user signup successfully we redirect user to plse verifiy email page -- then supabase send a mail where -- /email-verifed route -- this route need to be created in frontned -- and when user open it -- we will re-direct user on /email-verifed to -- /login only when email is verified if not we will re-direct user to verify email page -- keep in mind for this we need the supabase client in frontend also -- we can do it in backend -- by creating a simple route for email-verification and we call this api
 * we just need to figure out -- how i can change the template and set the confirmation email open on the **email-verified route** we just need to fix this means when user open the email confirmation mail and open the link this link should land on this route and our setup is done. for eamil verification and we can focus on login page.
+
+* what i am thinking is -- since when user signup -- successfully -- we will re-direct user to verify-email route and here  we will request user to open the mail and click on verification link -- right
+then --- once the user click on the verification link sent by supabase on successful signup we can set this link point to user on /email-verified route --- and when user reach this page -- after 2-5 sec a count down kind of thing to re-direct user to /login page-
+
+---
+
+* `Email verification flow` - **first on successfuly signup we will re-direct user to verify-email page and here we will show some message like plse verify ur email etc and then user open their mail and click the confiramation link that is sent by supabase and that link will be re-direct to /email-verified page and here we will show a message that email is verifed and after 1-2sec we re-direct user to /login page**
+* now there might be a question how email-verifed page know that email is verified so for this we don't have to bother since when user click on the link that is sent by suapbase -- the supabas will automatically mark the email as verified and we can use it to conform that email is verified -- second if we want to see is actually the email is verifed or not then we can setup the suapbase in frontend and get the user by this `const { data: { user } } = await supabase.auth.getUser();` and check here is email is verified or not but since we know that supabse will mark email as verified once the user click the link then only we are re-directing user to login page so we can skip this
+* So yes we don't need to “manually” verify again unless we want an extra safety check. Supabase handles the verification when the user clicks the link.
+* **imp thing is where the user will be re-directed that will be defined by redirectTo in backend signup service**
+
+```js
+export async function signupService(email,password,fullName,avatarUrl){
+    try{
+
+        console.log("email : ",email);
+        console.log("password : ",password);
+        console.log("fullname : ",fullName);
+        console.log("avatar url : ",avatarUrl);
+
+        // console.log("supabase is : ",supabase);
+
+        // calling supabase internal function for signup.
+        // const {data:authData,error:authError}=await supabase.auth.signUp({email,password}); 
+
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                // no need of this -- we had profiles table.
+                // data: {
+                //     full_name: fullName,
+                //     avatar_url: avatarUrl,
+                // },
+                emailRedirectTo: "http://localhost:5173/email-verified", // added this route so that 
+            },
+        });
+
+        console.log("auth data in signup is : ",authData);
+        console.log("auth erorr is : ",authError);
+
+        // in case if error occur
+        if(authError){
+            const err=new Error("sorry there is some issue with supabase.auth.singUp");
+            err.status=404;
+            err.message=authError.message;
+            throw err;
+        }
+
+        const user=authData.user;
+        console.log("user in signup service is : ",user);
+
+        // inserting row into profile table.
+        const {error:profileError}=await supabase.from("profiles").insert({
+            id:user.id,
+            full_name:fullName || null, // fallback
+            avatar_url:avatarUrl || null
+        });
+
+        // if any error occur in while creating the row in profile table.
+        if(profileError){
+            console.log("profile error : ");
+            const err=new Error("failed to create profile in signup service");
+            err.message=profileError.message;
+            err.status=400;
+            throw err;
+        }
+
+        // if user is created in supabase and a row in profile table also created successfully then return data.
+        /** we can add here if we need more data later like subsribed user or not etc.. */
+        return {
+            user,
+            profile:{
+                fullName,
+                avatarUrl
+            }
+        }
+    }catch(error){
+        console.log("erorr occured in the singup service layer and error is : ",error);
+        // throwing error back to controller.
+        throw error; 
+    }
+}
+
+```
+
+---
+
+* now to get the profile -- after the user is loged in -- we can't get a public link from supabase if our stroage is private- so we need to generate the signed url with expirary.
+
+* now -- the login and singup is done --- but i had a question -- may be this is advance one -- but see suppose user do signup with laptop and then a conformation email comes on his phone -- then he click it -- and open the login page in his phone  and he move to dashbord page -- now my question when user will referesh the website on the laptop -from home page will he also be loged in on laptop also
+
+---
+
+* now for google login -- we can go with backend route -- but instead of it we can directly call `supabase.auth.signInWithOAuth()` that automatically redirects the user to Google's OAuth page in the browser.
+* so for this we need to setup the supabase client in frontend.
+* the setup will be same -- we need to install .env and put supbase url , anon key in the .env and then setup the supabase client and then use it-
+
+---
+
+## Setting up supabase in frontend
+
+* first we need to install supabase
+
+    ```bash
+    npm i @supabase/supabase-js
+    ```
+
+* then we need to add the supabase url and anon key or public key in .env
+
+    ```env
+    VITE_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+    VITE_SUPABASE_ANON_KEY=YOUR-ANON-KEY
+
+    ```
+
+* then we need to create a client
+
