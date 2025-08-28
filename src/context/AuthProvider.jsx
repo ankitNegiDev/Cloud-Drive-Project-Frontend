@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { authService } from "../services/authService";
 import AuthContext from "./AuthContext";
+import { supabase } from "../config/supabaseClient";
 
 
 // AuthProvider acts as a container and shares state & functions with all children
@@ -18,6 +19,7 @@ export function AuthProvider({ children }){
     //! what if the toekn is expired then user will still be loged in -- but we don't want that -- so for this we had the axios intercptor which will loged out user if he do any api call with that expired token -- secondly we can add a token validation here in auth provider that even if user is in localstorage and token is expired we will show user have to loged in toekn is expired.
     //todo => third thing -- if we didn't check toekn expiray here then -- what will happen is when user is in local storage with expired token -- the user still remians loged in and when user hit any protected routes like upload or delte files then automactically the backend throw the error that invalid token and our axios response intercptor will get 401 and it will loged out user and --- user will be like what just happend ?? ... so better to check toekn expiry here when app load so that we can ask user to loged in even before doing any api call..
 
+    /*
     useEffect(function callback(){
         async function initializeUser(){
             const storedUser = localStorage.getItem("user");
@@ -48,6 +50,71 @@ export function AuthProvider({ children }){
         // calling initializeUser function 
         initializeUser();
     },[]);
+    */
+    
+
+    // this use effect will run when the component load for the first time-
+    useEffect(function () {
+        // this function will check two thing -- is user loged in user google login or custom login
+        async function initializeUser() {
+            try {
+                // in google login we will chheck if Supabase already has an active session
+                const { data, error } = await supabase.auth.getSession();
+
+                // if not active seession then we wil lget error
+                if (error) {
+                    console.log("Error getting Supabase session:", error.message);
+                }
+
+                // if user has session then get that user update the frontend that user is loged in. by setting user in state...
+                if (data && data.session && data.session.user) {
+                    setUser(data.session.user);
+                } else {
+                    // If no Supabase session then check localStorage for a stored user may be user did loged in using custom.
+                    const storedUser = localStorage.getItem("user");
+
+                    if (storedUser) {
+                        try {
+                            // just for extra security validating the token with backend..
+                            const response = await authService.getCurrentUser();
+                            setUser(response);
+                        } catch (error) {
+                            // if token is invalid/expired then we need to clear user from local storage and ask for re-loging
+                            console.log("Local storage user invalid:", error.message);
+                            setUser(null);
+                            localStorage.removeItem("user");
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log("Error in initializeUser:", error.message);
+            } finally {
+                // marking loading as false once initialization finishes
+                setLoading(false);
+            }
+        }
+
+        // calling the function.
+        initializeUser();
+
+        // Listening for Supabase auth state changes lik login/logout from another tab
+        const { data: listener } = supabase.auth.onAuthStateChange(function (_event, session) {
+            if (session && session.user) {
+                setUser(session.user);
+            } else {
+                setUser(null);
+            }
+        });
+
+        // Cleanup subscription when component unmounts --
+        /**
+         * n AuthProvider, you usually want the listener to exist as long as the provider itself is mounted (which is usually the whole app lifetime).
+         * But React still requires you to clean it up properly, in case the provider is ever unmounted/remounted (like in tests, or during hot reload, or if you restructure your app).
+         */
+        return function cleanup() {
+            listener.subscription.unsubscribe();
+        };
+    }, []);
 
     // now creating all functions that we want to share with those component which is wrapped by this provider.
 
@@ -57,6 +124,7 @@ export function AuthProvider({ children }){
         try{
             // calling our auth service for signup -- see in signup no token is generated so there is no need to save user info right now -- we will save user info in local storage and state once the user is loged in.
             const response=await authService.signup(userData);
+            console.log("response in auth provider after user signup is : ",response);
 
             return response;
         }catch(error){
@@ -74,12 +142,14 @@ export function AuthProvider({ children }){
         try{
             // calling our auth service login function
             const response=await authService.login(credentials);
+            console.log("repsonse after login in auth provider is : ",response);
 
             // setting the user info in state
             setUser(response);
 
             // setting user info in local storage..
             localStorage.setItem("user",JSON.stringify(response));
+            console.log("getting the item user from local storage : ",localStorage.getItem("user"));
 
             return response;
         }catch(error){
@@ -109,7 +179,8 @@ export function AuthProvider({ children }){
         }
     }
 
-    // (4) google login
+    // (4) google login -- auth service -- this was for acc to backend route but we are using supabse in frotnent to call google oath direclty
+    /*
     async function googleLogin() {
         try {
             const response = await authService.googleLogin();
@@ -120,6 +191,26 @@ export function AuthProvider({ children }){
             throw error;
         }
     }
+    */
+
+    // (4) Google login using Supabase OAuth
+    async function googleLogin() {
+        try {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: "google",
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.log("Error in google login:", error.message);
+            throw error;
+        }
+    }
+    
 
     // Get current user - optional function
     async function getCurrentUser() {
