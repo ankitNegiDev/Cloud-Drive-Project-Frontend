@@ -26,9 +26,10 @@ async function login(credentials){
     try{
         // calling api
         const response=await api.post('/auth/login',credentials);
+        console.log("response after calling api for login is : ",response);
 
         // returning response back from where itis clled (component/contenxt)
-        return response.data;
+        return response.data; // this is axios data -- means axios bind our whole response in the data -- 
 
     }catch(error){
         console.log("error occured in login api calling -- check auth sercie and error is : ",error);
@@ -73,8 +74,9 @@ async function getCurrentUser(){
     }
 }
 
-// (5) google login
+// (5) google login --- google login is done by -- using suapbase directly from frontned.
 
+/*
 async function googleLogin(){
     try{
         // calling api
@@ -90,6 +92,7 @@ async function googleLogin(){
         throw error;
     }
 }
+*/
 
 // exporting all functions
 export const authService = {
@@ -97,5 +100,5 @@ export const authService = {
     login,
     logout,
     getCurrentUser,
-    googleLogin
+    // googleLogin
 };
