@@ -506,3 +506,15 @@ export async function signupService(email,password,fullName,avatarUrl){
 
 * then we need to create a client
 
+---
+
+* for google login --using supabase -- we need to setup the things in the google cloud console and make sure to update it after deployement with deployed url for frotnend.
+
+* the steps are
+* first go to google cloud console then create a new project or existing project
+* then click on the hamburger menue --
+* then click on api-and services
+* then click on library
+* then search for google identity and search for identity tool kit api
+* then click on it and open it
+* then click on OAuth consent screen complete it and get client id and secret key and then paste it inside the supabase -- go to authentication -- then singin provider --- look for google -- then open it and paste it there
