@@ -30,6 +30,7 @@ api.interceptors.request.use(
     async function (config){
         // getting user from local storage. -- it reutrn the data in string format only when exist else return the null
         const storedUser=localStorage.getItem("user");
+        console.log("stored user from localstorage in axios instance is  : ",storedUser);
         let user=null;
 
         // now storing the stored user info in user only if exist else we will set null in user..
@@ -43,14 +44,28 @@ api.interceptors.request.use(
             }
             */
             user= storedUser ? JSON.parse(storedUser) : null;
+            if(user){
+                console.log("parsed user after getting it from local storage is : ", user);
+                // console.log("access token is : ", user.response.accessToken);
+            }
         }catch(error){
             console.log("Error in parsing user from local storage and error is : ",error);
             throw error;
         }
 
         // if user exist and have token then we need to add it in request headers
-        if(user && user.token){
-            config.headers.Authorization = "Bearer " + user.token;
+        
+        // if(user && user.token){
+        //     config.headers.Authorization = "Bearer " + user.token;
+        // }
+        
+        // console.log("user.token is ; ",user.token);
+        // console.log("user .accesstoken is : ",user.accessToken);
+
+        if (user && user.response.accessToken) {
+            console.log("user .response.accesstoken is : ",user.response.accessToken);
+
+            config.headers.Authorization = "Bearer " + user.response.accessToken;
         }
 
         return config;
@@ -88,11 +103,14 @@ api.interceptors.response.use(
                 localStorage.removeItem("user");
 
                 // redirecting user to login page once the token is expired..
-                window.location.href = "/login";
+                // window.location.href = "/login";
+                setTimeout(function callback(){
+                    window.location.href='/login';
+                },100000);
 
             } else if (status >= 400 && status < 500) {
                 // all client errors
-                toast.error(error.response.data?.message || "Something went wrong!");
+                toast.error(error.response.data?.message || "Something went wrong re-directing to login page!");
             } else if (status >= 500) {
 
                 // all server errors.
