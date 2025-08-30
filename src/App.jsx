@@ -10,6 +10,7 @@ import VerifyEmail from './pages/VerifyEmail.jsx';
 import EmailVerified from './pages/EmailVerified.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import AuthCallback from './pages/AuthCallback.jsx';
+import Profile from './pages/Profile.jsx';
 
 
 
@@ -28,7 +29,7 @@ function App() {
                     <Route path='dashboard' element={<Dashboard />} />
                     {/* <Route path="/auth/v1/callback" element={<AuthCallback />} /> */}
                     {/* <Route path="/auth-callback" element={<h1>Callback Page Hit</h1>} /> */}
-
+                    <Route path='/profile' element={<Profile/>} />
 
                 </Route>
                 <Route path="login" element={<Login />} />

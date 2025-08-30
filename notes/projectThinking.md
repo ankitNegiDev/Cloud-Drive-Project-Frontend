@@ -518,3 +518,10 @@ export async function signupService(email,password,fullName,avatarUrl){
 * then search for google identity and search for identity tool kit api
 * then click on it and open it
 * then click on OAuth consent screen complete it and get client id and secret key and then paste it inside the supabase -- go to authentication -- then singin provider --- look for google -- then open it and paste it there
+
+---
+so far we have done with - auth part the only thing left is we need to update the deployed link in google cloud console or i guess in supabse -- we will see it later..
+
+---
+
+* now we have to work on dashboard page first we need to create a nice looking dashboard but before that we will go with minimum tailwind css and first complete the functionality.
