@@ -171,6 +171,8 @@ export function AuthProvider({ children }){
 
             // removing the user info from the localstorage..
             localStorage.removeItem("user");
+            // removing the user infor from localstorage -- if user was loged in using google
+            localStorage.removeItem("sb-jwguvwltdasfoyecnlro-auth-token");
         }catch(error){
             console.log("error occured in logout auth provider and error is : ",error);
 
