@@ -587,3 +587,39 @@ so far we have done with - auth part the only thing left is we need to update th
 * #### (6) FileUpload.jsx
 
 * #### (7) NewItemModal.jsx
+
+* things that are left..
+
+ItemContextMenu
+
+Implement actual actions for: delete, rename, download, star, share.
+
+Add toast notifications.
+
+File Upload
+
+Drag & drop.
+
+Upload progress.
+
+Preview for images/PDFs/text files.
+
+Sorting & Filtering
+
+By name, size, date.
+
+Trash & Versioning
+
+Restore / permanently delete
+
+Track file changes
+
+Optional
+
+Sharing UI (permissions, public links)
+
+Performance optimization (lazy loading, caching)
+
+Responsive final adjustments
+
+i am left with file crud and share and search one
