@@ -30,7 +30,7 @@ api.interceptors.request.use(
     async function (config){
         // getting user from local storage. -- it reutrn the data in string format only when exist else return the null
         const storedUser=localStorage.getItem("user");
-        console.log("stored user from localstorage in axios instance is  : ",storedUser);
+        // console.log("stored user from localstorage in axios instance is  : ",storedUser);
         let user=null;
 
         // now storing the stored user info in user only if exist else we will set null in user..
@@ -45,7 +45,7 @@ api.interceptors.request.use(
             */
             user= storedUser ? JSON.parse(storedUser) : null;
             if(user){
-                console.log("parsed user after getting it from local storage is : ", user);
+                // console.log("parsed user after getting it from local storage is : ", user);
                 // console.log("access token is : ", user.response.accessToken);
             }
         }catch(error){
@@ -63,7 +63,7 @@ api.interceptors.request.use(
         // console.log("user .accesstoken is : ",user.accessToken);
 
         if (user && user.response.accessToken) {
-            console.log("user .response.accesstoken is : ",user.response.accessToken);
+            // console.log("user .response.accesstoken is : ",user.response.accessToken);
 
             config.headers.Authorization = "Bearer " + user.response.accessToken;
         }
