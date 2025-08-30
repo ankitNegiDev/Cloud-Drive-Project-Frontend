@@ -525,3 +525,65 @@ so far we have done with - auth part the only thing left is we need to update th
 ---
 
 * now we have to work on dashboard page first we need to create a nice looking dashboard but before that we will go with minimum tailwind css and first complete the functionality.
+
+* on dashboard page -- there is a lot of functionality so we will go step by step and for that we need to create a sperate folder for component -- that will contains only drive components-
+
+* now there are few dashboard functionality that should be present in the dashboard.
+
+---
+
+## Dashboard component
+
+* ### (1) Layout Setup
+
+  * Sidebar (for navigation: My Files, Shared with Me, Settings, Profile, etc.). or we can go with -- my drive , shared with me , recent , starred , trash one-- we will see
+  * Main area (dynamic content that changes based on selected section). -- here the content comes from modular compoennt.
+  * Top navbar ( for breadcrumbs, search, notifications, profile avatar).
+
+* ### (2) User Info Section
+
+* ### (3) File Management
+
+* ### (4) Breadcrumbs / Folder Navigation
+
+  * make sure we don't have any route for beardcrubms so we need to manage it in frontend.
+
+* ### (5) File/Folder Actions
+
+  * here all crud operations realted to file / folder since wwe have seprated routes for folder and files so we need to be careful what we are using.
+
+* ### (6) Search / Filter
+
+---
+
+* somehow the dashboard will show this
+
+---
+
+### component that are requied for dashboard page
+
+* #### (1) Sidebar
+
+  * so we will need a sidebar component -- where we will show **my drive , shared with me , recent , starred , trash**
+
+  * so first we will create the sidebar component...
+
+* #### (2) DashboardHeader.jsx
+
+  * mostly it will handle Search bar , View toggle (grid/list) , New button to open modal
+
+* ### (3) Breadcrumbs.jsx
+
+  * This will mainly handle folder navigation inside the dashboard.
+
+* #### (4) ItemGrid.jsx
+
+  * it will render all files and folder and when user click a file and folder its responsibliby fo this component to handel that..
+
+* #### (5) ItemContextMenu.jsx
+
+  * ItemContextMenu.jsx will handles the right-click menu on any file or folder, with actions like Download, Share, Star, Rename, Delete.
+
+* #### (6) FileUpload.jsx
+
+* #### (7) NewItemModal.jsx
