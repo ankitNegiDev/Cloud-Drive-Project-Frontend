@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 // creating a axios instance
 
 const api=axios.create({
-    baseURL:'http://localhost:3000/api',
+    // baseURL:'http://localhost:3000/api',
+    baseURL: 'https://cloud-drive-project-backend.onrender.com/api',
     // in hedars we sent what type of data will be sent by this request.
     headers: { "Content-Type": "application/json" } 
 });
