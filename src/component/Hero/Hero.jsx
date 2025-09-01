@@ -32,11 +32,12 @@ function Hero() {
 
                     {/* Right: Hero Image / Mockup */}
                     <div className="flex-1 flex justify-center">
-                        <img
-                            src="/hero-drive-illustration.png" // later replace with your illustration/mockup
+                        {/* add video or image later */}
+                        {/* <img
+                            src=""
                             alt="Drive Illustration"
                             className="w-[400px] md:w-[500px] rounded-lg shadow-2xl"
-                        />
+                        /> */}
                     </div>
                 </div>
             </section>
