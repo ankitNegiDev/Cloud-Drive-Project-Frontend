@@ -43,3 +43,4 @@
   * ### (b) grid/list view
 
     * now search is done so we have gird/list view button
+    * so for this we had a state **viewMode** and **setViewMode** function to set the view mode- the logic is simple if the *viewMode is grid then show the list and vice versa* then we will pass this view mode to **ItemGrid** component to change the ui of main content area of dashboard page
