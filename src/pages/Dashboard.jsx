@@ -305,7 +305,7 @@ function Dashboard() {
 
     const [items, setItems] = useState([]);
     const [currentFolderId, setCurrentFolderId] = useState(null);
-    const [breadcrumbs, setBreadcrumbs] = useState([{ id: null, name: "Root" }]);
+
     const [loading, setLoading] = useState(false);
 
     // this state is for which tab is active means if user click on recent that means active tab is recent one..my-drive | shared-with-me | recent | starred | trash
@@ -321,6 +321,10 @@ function Dashboard() {
 
     // this state is for mainging the opening and closing of the modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // this state is for breadcrumbs navigation --
+    const [breadcrumbs, setBreadcrumbs] = useState([{ id: null, name: "Root" }]);
+
 
     // action modals
     const [renameTarget, setRenameTarget] = useState(null);
@@ -483,17 +487,7 @@ function Dashboard() {
 
 
 
-    function handleNavigate(folderId) {
-        if (folderId === null) {
-            setCurrentFolderId(null);
-            setBreadcrumbs([{ id: null, name: "Root" }]);
-        } else {
-            const index = breadcrumbs.findIndex((b) => b.id === folderId);
-            setBreadcrumbs(breadcrumbs.slice(0, index + 1));
-            setCurrentFolderId(folderId);
-        }
-    }
-
+    // this is for setting the folder id,name into the breadcrubms state when user click on any folder.
     function handleItemClick(item) {
         if (item.type === "folder") {
             setCurrentFolderId(item.id);
@@ -503,6 +497,24 @@ function Dashboard() {
             setPreviewTarget(item);
         }
     }
+
+    // logic for handling the navigation -- for breadcrumb navigation...
+    function handleNavigate(folderId) {
+        // if folder id is null s--- show root 
+        if (folderId === null) {
+            setCurrentFolderId(null);
+            setBreadcrumbs([{ id: null, name: "Root" }]);
+        } else {
+            // else first find that folder id from the breadcrumbs array and then set into the breadcrubms state... 
+            let index = breadcrumbs.findIndex(function (b) {
+                return b.id === folderId;
+            });
+            setBreadcrumbs(breadcrumbs.slice(0, index + 1));
+            setCurrentFolderId(folderId);
+        }
+    }
+
+
 
     // ---------- ACTION CALLS ----------
     async function downloadFile(item) {
@@ -668,7 +680,7 @@ function Dashboard() {
                     onItemCreated={handleNewItemCreated}
                 />
 
-                
+
 
                 <div className="p-6 overflow-y-auto flex-1">
                     <Breadcrumbs path={breadcrumbs} onNavigate={handleNavigate} />
@@ -751,4 +763,5 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
 
