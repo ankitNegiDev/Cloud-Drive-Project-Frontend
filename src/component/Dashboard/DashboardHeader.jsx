@@ -4,8 +4,8 @@ import { Search, Upload, List, Grid3X3 } from "lucide-react";
 function DashboardHeader(props) {
     const { searchQuery, onSearchChange, viewMode, onViewModeToggle, onNewClick } = props;
 
-    function handleSearchChange(e) {
-        onSearchChange(e.target.value);
+    function handleSearchChange(event) {
+        onSearchChange(event.target.value);
     }
 
     function handleViewToggle() {
