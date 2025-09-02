@@ -6,6 +6,10 @@
 
     ![dashboard page](../src/assets/dashboard%20page.png)
 
+* the component in dashboard page will be something like this
+
+    ![dasboard page component](../src/assets/dashboard%20component.png)
+
 * so here we have lot of component but we will start one by one
 
 * ## (1) Sidebar.jsx
