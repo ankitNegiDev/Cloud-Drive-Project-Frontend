@@ -71,3 +71,9 @@
   * onItemCreated -> callback to refresh the item list after creation
 
   * now in newItem modal we do only two things mainly one is folder creation so for that we call our folder creation api and second is file upload so for that we call our file upload api.
+
+* ## (4) BreadCrumb.jsx
+
+  * this component will mainly focus on handeling the navigation. means it will show the path of the current folder.. like **/root/newfolder/my-images/all images etc**
+  * so breadcrumb has mainly work is when user click on any folder then set that file/folder detials in the breadcrumbs array (state) and later onNavigate we had a handeler function that will show the navigation for current folder.
+
