@@ -44,3 +44,30 @@
 
     * now search is done so we have gird/list view button
     * so for this we had a state **viewMode** and **setViewMode** function to set the view mode- the logic is simple if the *viewMode is grid then show the list and vice versa* then we will pass this view mode to **ItemGrid** component to change the ui of main content area of dashboard page
+
+  * ### (c) New button or +
+
+    * this button has main work is to open a modal and show two feature one is to upload file and another is create folder.
+    * so when the user is click on this button then we attach a onclick event on it and passed it back to dashboard page -- where we are changing the state **isModalOpen** so when user click on it the modal will open and when user click on cancel button the modal will be closed.
+    * now how this modal will be looked like it is decided by another component that is **NewItemModal** this component is responsible for how the modal will look like and behave.
+
+* ## (3) NewItemModal.jsx
+
+  * this component is mostly responsible for when user click the new button it will open a modal that will show two thing *(a) user can create new folder and second (b) is user can upload a file*
+
+    ```jsx
+    <NewItemModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        parentId={currentFolderId}
+        onItemCreated={handleNewItemCreated}
+    />
+    ```
+
+  * here ---
+  * isOpen -> determines visibility
+  * onClose -> called to close the modal
+  * parentId -> tells modal where the new folder/file should be created
+  * onItemCreated -> callback to refresh the item list after creation
+
+  * now in newItem modal we do only two things mainly one is folder creation so for that we call our folder creation api and second is file upload so for that we call our file upload api.
