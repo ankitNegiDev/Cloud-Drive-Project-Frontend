@@ -85,6 +85,8 @@ function Dashboard() {
                     params: { parentId: currentFolderId },
                 });
 
+                console.log("response of get api for items and checking signed url : ",res);
+
             } else if (activeSection === "shared-with-me") {
                 //shared route
                 res = await api.get("/shares/shared-with-me");
