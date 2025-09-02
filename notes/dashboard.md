@@ -20,3 +20,22 @@
   * todo -> *the pending is starred and recent routes* we will see at the end how we can do them.
 
   ---
+
+* ## (2) DashboardHeader.jsx
+
+  * keep in mind this component contains **Contains search box, view mode toggle (grid/list), and new+ button**
+  * now since this component handel three different purpose so lets go one by one.
+
+  * ### (a) **Search**
+
+    * so it recives **searchQuery** state and a function **setSearchQuery** to update the value of search query when it changes.
+    * so in DashboardHeader component we had input and we are setting a *onChange* event on it which is handelSearchChange so this will get the latest text that is written in the search box and then set this text in the state **searchQuery**
+    * *confusion* ***in dashboard page we need to call our search api -- ?? ideally it should be called when user types -- or either immediatly - if user stop writing - (like so we don't spam our server) **debounce** or when user hit enter or press the search icon ?? i am confused where should i put this logic***
+
+    * todo => so when the dashboard header update the state searchquery then in dashboard page we need to call the our search api -- it will fetch items regard less of folder -- and it will fetch only loged in user data not other so we need to make a api call in dashboard page -- this is pending.
+
+    * so we did the debounced search --- with a delay of 500ms which is enough i guess and also we implement this one when user press the enter then user should get the search result. so for this we are just doing onkeydown event.
+
+  * ### (b) grid/list view
+
+    * now search is done so we have gird/list view button
