@@ -296,8 +296,10 @@ import toast from "react-hot-toast";
 import RenameModal from "../component/Dashboard/RenameModal";
 import PreviewModal from "../component/Dashboard/PreviewModal";
 import MoveDialog from "../component/Dashboard/MoveDialog";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+    const navigate=useNavigate();
     const { user } = useContext(AuthContext);
     console.log("user on dashboard page from auth is : ",user);
 
@@ -305,9 +307,19 @@ function Dashboard() {
     const [currentFolderId, setCurrentFolderId] = useState(null);
     const [breadcrumbs, setBreadcrumbs] = useState([{ id: null, name: "Root" }]);
     const [loading, setLoading] = useState(false);
-    const [activeSection, setActiveSection] = useState("my-drive"); // my-drive | shared-with-me | recent | starred | trash
-    const [viewMode, setViewMode] = useState("grid");
+
+    // this state is for which tab is active means if user click on recent that means active tab is recent one..my-drive | shared-with-me | recent | starred | trash
+    const [activeSection, setActiveSection] = useState("my-drive");
+    
+
+    // this state is for setting the text that will user write in the search box.
     const [searchQuery, setSearchQuery] = useState("");
+
+
+    // 
+    const [viewMode, setViewMode] = useState("grid");
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // action modals
@@ -316,23 +328,53 @@ function Dashboard() {
     const [previewTarget, setPreviewTarget] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
 
+
+    //Todo => an api call for search since dashboard header only update the searchQuery state so based on this we need to call our search api -- // GET /api/search?query=&type=&parentId=&limit=&offset= ====>  searchRouter.get('/', authMiddleware, searchItemsController);
+    
     const fetchItems = useCallback(async function () {
         try {
             setLoading(true);
-            const params = {
-                parentId: currentFolderId,
-                section: activeSection,
-                search: searchQuery || undefined,
-            };
-            const res = await api.get("/items", { params });
-            setItems(res.data?.data || []);
+
+            let res;
+
+            if (activeSection === "my-drive") {
+                // call items route -- by default it will show what's on home routes
+                res = await api.get("/items", {
+                    params: { parentId: currentFolderId },
+                });
+
+            } else if (activeSection === "shared-with-me") {
+                //shared route
+                res = await api.get("/shares/shared-with-me");
+                console.log("response of shared with me api is : ",res);
+
+            } else if (activeSection === "trash") {
+                // trash route
+                res = await api.get("/trash");
+                console.log("response of trash api is : ",res);
+
+            } else if (activeSection === "recent") {
+                //todo => future API
+                res = { data: { data: [] } };
+
+            } else if (activeSection === "starred") {
+                //todo  future API
+                res = { data: { data: [] } };
+
+            } else if (activeSection === "home") {
+                //no API, just clear items (or redirect if you have a homepage)
+                setItems([]);
+                return;
+            }
+
+            setItems(res?.data?.data || []);
         } catch (error) {
             console.error("Error fetching items:", error);
             setItems([]);
         } finally {
             setLoading(false);
         }
-    }, [currentFolderId, activeSection, searchQuery]);
+    }, [activeSection, currentFolderId]);
 
     useEffect(
         function () {
@@ -341,10 +383,29 @@ function Dashboard() {
         [fetchItems]
     );
 
+    // function handleSectionChange(sectionId) {
+    //     setActiveSection(sectionId);
+    //     //todo => on dashboard page based on section id we can call api -- either for starred , trash , shared with me etc
+    //     setCurrentFolderId(null);
+    //     setBreadcrumbs([{ id: null, name: "Root" }]);
+    // }
+
+
     function handleSectionChange(sectionId) {
         setActiveSection(sectionId);
-        setCurrentFolderId(null);
-        setBreadcrumbs([{ id: null, name: "Root" }]);
+
+        if (sectionId === "my-drive") {
+            setCurrentFolderId(null);
+            setBreadcrumbs([{ id: null, name: "Root" }]);
+        } else if (sectionId === "home") {
+            // navigate to the Home page
+            navigate("/");
+            return;
+        } else {
+            // shared-with-me / trash etc → flat lists (no folder nav)
+            setCurrentFolderId(null);
+            setBreadcrumbs([{ id: null, name: sectionId }]);
+        }
     }
 
     function handleNavigate(folderId) {
