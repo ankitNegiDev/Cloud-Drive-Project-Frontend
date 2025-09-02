@@ -1,12 +1,12 @@
 
-import React from "react";
-import { Home, Users, Clock, Star, Trash2 } from "lucide-react";
+import { Home, Users, Clock, Star, Trash2, HardDrive } from "lucide-react";
 
 function Sidebar(props) {
     const { activeSection, onSectionChange } = props;
 
     const sections = [
-        { id: "my-drive", label: "My Drive", icon: Home },
+        {id: "home", label: "Home", icon: Home},
+        { id: "my-drive", label: "My Drive", icon: HardDrive },
         { id: "shared-with-me", label: "Shared with Me", icon: Users },
         { id: "recent", label: "Recent", icon: Clock },
         { id: "starred", label: "Starred", icon: Star },
