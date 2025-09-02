@@ -411,6 +411,7 @@ function Dashboard() {
     //Todo => an api call for search since dashboard header only update the searchQuery state so based on this we need to call our search api -- // GET /api/search?query=&type=&parentId=&limit=&offset= ====>  searchRouter.get('/', authMiddleware, searchItemsController);
 
     // --- search bar logicc ---
+    /*
     useEffect(function () {
         async function performSearch() {
             try {
@@ -436,8 +437,42 @@ function Dashboard() {
 
         performSearch();
     }, [searchQuery, fetchItems]);
-
+    */
     
+    useEffect(function () {
+        if (!searchQuery || searchQuery.trim() === "") {
+            fetchItems(); // reset to normal items if search box is empty
+            return;
+        }
+
+        const delay = 500; // 500ms debounce delay
+        const handler = setTimeout(function () {
+            (async function () {
+                try {
+                    setLoading(true);
+                    const res = await api.get("/search", {
+                        params: { query: searchQuery }
+                    });
+                    console.log("res of debounced search api is : ",res);
+                    setItems(res.data.data || []);
+                } catch (error) {
+                    console.error("Error in search:", error);
+                    setItems([]);
+                } finally {
+                    setLoading(false);
+                }
+            })();
+        }, delay);
+
+        // cleanup its imp to  clear the timeout if searchQuery changes before 500ms else we will not -- it simply means suppose user want to search mango and he type m and stop for 200ms so timer is having time 200ms and again he type ang  then we need to now clear the previous timer and run the new timer becuse if we don't clear previous on it will end up in calling multiple api.
+        return function () {
+            clearTimeout(handler);
+        };
+
+    }, [searchQuery, fetchItems]);
+
+
+
 
     function handleNavigate(folderId) {
         if (folderId === null) {
