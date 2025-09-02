@@ -471,6 +471,13 @@ function Dashboard() {
 
     }, [searchQuery, fetchItems]);
 
+    // search when user press enter key
+    function handleSearchKeyDown(event) {
+        if (event.key === "Enter") {
+            // call search immediately without waiting for debounce when user press the enter key
+            fetchItems();
+        }
+    }
 
 
 
@@ -639,6 +646,7 @@ function Dashboard() {
                 <DashboardHeader
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
+                    onSearchKeyDown={handleSearchKeyDown}
                     viewMode={viewMode}
                     onViewModeToggle={setViewMode}
                     onNewClick={function () {
