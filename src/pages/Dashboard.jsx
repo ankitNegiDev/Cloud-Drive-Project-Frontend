@@ -319,7 +319,7 @@ function Dashboard() {
     // this state is for managing the list/grid view
     const [viewMode, setViewMode] = useState("grid");
 
-
+    // this state is for mainging the opening and closing of the modal
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // action modals
@@ -656,6 +656,19 @@ function Dashboard() {
                     }}
                     onSearchSubmit={fetchItems}
                 />
+                
+
+                {/* this is responsible for new button modal open -- folder creation + file upload */}
+                <NewItemModal
+                    isOpen={isModalOpen}
+                    onClose={function () {
+                        setIsModalOpen(false);
+                    }}
+                    parentId={currentFolderId}
+                    onItemCreated={handleNewItemCreated}
+                />
+
+                
 
                 <div className="p-6 overflow-y-auto flex-1">
                     <Breadcrumbs path={breadcrumbs} onNavigate={handleNavigate} />
@@ -683,15 +696,6 @@ function Dashboard() {
                 </div>
             </div>
 
-            {/* Create */}
-            <NewItemModal
-                isOpen={isModalOpen}
-                onClose={function () {
-                    setIsModalOpen(false);
-                }}
-                parentId={currentFolderId}
-                onItemCreated={handleNewItemCreated}
-            />
 
             {/* Rename */}
             <RenameModal
