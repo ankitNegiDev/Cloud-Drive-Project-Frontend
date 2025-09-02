@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import api from "../../utils/axiosInstance";
 
@@ -16,6 +15,7 @@ function FileUpload(props) {
         event.preventDefault();
         setIsDragging(false);
     }
+
     async function handleDrop(event) {
         event.preventDefault();
         setIsDragging(false);
@@ -26,6 +26,7 @@ function FileUpload(props) {
             formData.append("file", files[i]);
             formData.append("parentId", parentId);
 
+            // calling our api when user will do drag and drop
             let res = await api.post("/file", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
@@ -41,6 +42,7 @@ function FileUpload(props) {
             formData.append("file", files[i]);
             formData.append("parentId", parentId);
 
+            // calling our pai when user will upload file via uplaod buttton
             let res = await api.post("/file", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
@@ -59,7 +61,10 @@ function FileUpload(props) {
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={"relative " + (isDragging ? "bg-blue-50 border-2 border-dashed border-blue-300" : "")}
+            className={
+                "relative border-2 border-dashed border-gray-600 bg-gray-800 p-6 rounded flex flex-col items-center justify-center mb-6" +
+                (isDragging ? "bg-blue-50 border-blue-300" : "")
+            }
         >
             {isDragging && (
                 <div className="absolute inset-0 bg-blue-50 bg-opacity-90 flex items-center justify-center z-10">
@@ -76,6 +81,9 @@ function FileUpload(props) {
             />
 
             {children && React.cloneElement(children, { onClick: openFileDialog })}
+
+            {/* placeholder text*/}
+            <p className="mt-2 text-gray-400 text-sm">Drag & drop files here or click the button to upload</p>
         </div>
     );
 }
