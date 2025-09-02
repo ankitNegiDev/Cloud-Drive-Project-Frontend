@@ -77,3 +77,8 @@
   * this component will mainly focus on handeling the navigation. means it will show the path of the current folder.. like **/root/newfolder/my-images/all images etc**
   * so breadcrumb has mainly work is when user click on any folder then set that file/folder detials in the breadcrumbs array (state) and later onNavigate we had a handeler function that will show the navigation for current folder.
 
+* ## (5) UploadFile.jsx
+
+  * this upload file component -- responsible for two thing -- one is upload file directly wit hthe button second is upload file using drag and drop.
+
+  * *now the confusion is thsi drag and drop and upload file is coming when user will click the starrred/recent/trash tabs so we need to stop this so that it won't be visible there* for this we use activesection state in the dasboard page becsuse we will know when user will click theese tabs..
