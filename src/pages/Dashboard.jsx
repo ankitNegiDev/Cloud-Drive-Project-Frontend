@@ -514,6 +514,9 @@ function Dashboard() {
         }
     }
 
+    // breadcrumbs navigation ends here --------------
+
+
 
 
     // ---------- ACTION CALLS ----------
@@ -685,11 +688,19 @@ function Dashboard() {
                 <div className="p-6 overflow-y-auto flex-1">
                     <Breadcrumbs path={breadcrumbs} onNavigate={handleNavigate} />
 
-                    <FileUpload parentId={currentFolderId} onUploadComplete={fetchItems}>
+                    {/* <FileUpload parentId={currentFolderId} onUploadComplete={fetchItems}>
                         <button className="mb-4 px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition">
                             Upload Files
                         </button>
-                    </FileUpload>
+                    </FileUpload> */}
+
+                    {activeSection === "my-drive" && (
+                        <FileUpload parentId={currentFolderId} onUploadComplete={fetchItems}>
+                            <button className="mb-4 px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition">
+                                Upload Files
+                            </button>
+                        </FileUpload>
+                    )}
 
                     {loading ? (
                         <div className="flex justify-center items-center h-40 text-gray-400">
