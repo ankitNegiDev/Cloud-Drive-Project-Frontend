@@ -316,7 +316,7 @@ function Dashboard() {
     const [searchQuery, setSearchQuery] = useState("");
 
 
-    // 
+    // this state is for managing the list/grid view
     const [viewMode, setViewMode] = useState("grid");
 
 
@@ -478,6 +478,8 @@ function Dashboard() {
             fetchItems();
         }
     }
+
+    // ---- search logic ends here -------
 
 
 
