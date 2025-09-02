@@ -7,8 +7,13 @@ import api from "../../utils/axiosInstance";
 function NewItemModal(props) {
     const { isOpen, onClose, parentId, onItemCreated } = props;
 
+    // this state is for folder name --
     const [folderName, setFolderName] = useState("");
+
+    // loading state for folder creation
     const [folderLoading, setFolderLoading] = useState(false);
+
+    // loading state for file upload
     const [fileLoading, setFileLoading] = useState(false);
 
     const fileInputRef = useRef(null);
@@ -32,7 +37,10 @@ function NewItemModal(props) {
 
         setFolderLoading(true);
         try {
-            await api.post("/folder", { name: folderName, parentId: parentId });
+            // callign our api for new folder creation
+            let res = await api.post("/folder", { name: folderName, parentId: parentId });
+            console.log("res of creating new folder api in newItem modal is : ",res);
+
             setFolderName("");
             toast.success("Folder created successfully!");
             if (onItemCreated) onItemCreated();
@@ -56,9 +64,11 @@ function NewItemModal(props) {
                 formData.append("file", files[i]);
                 formData.append("parentId", parentId);
 
-                await api.post("/file", formData, {
+                // calling our upload file api
+                let res = await api.post("/file", formData, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
+                console.log("respon of upload file in the new Item moadl is : ",res);
             }
             toast.success("Files uploaded successfully!");
             if (onItemCreated) onItemCreated();
