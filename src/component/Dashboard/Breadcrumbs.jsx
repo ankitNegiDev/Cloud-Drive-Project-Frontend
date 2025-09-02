@@ -3,10 +3,12 @@ import { Home, ChevronRight } from "lucide-react";
 import React from "react";
 
 function Breadcrumbs(props) {
+    // path is a state -breadcrumbs in dashboard which is holding current folder path
+    // onNavigate function will tell dashboard which folder was clicked.
     const { path, onNavigate } = props;
 
     function handleNavigate(folderId) {
-        onNavigate(folderId);
+        onNavigate(folderId); // passing folder id back to dasboard so that dasboard can fetch the file/folder inside it..
     }
 
     return (
