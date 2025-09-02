@@ -90,4 +90,14 @@
   * okey there is a error in re-name when user do re-name -- the backend recives new name as undefine so we need to check.
   * trash and download are working but rest are not so we will do it also.
 
+  * now i am just stuck here -- i need to show the preview kind of image for the files and the folder should come above the files -- just like google -- so for this image one i need to call the backend api for getting the signed url... **keep in mind this api of generating signed url is breaking after deployment check it while it works correctly in local**
+  * now to show the preview we just need to add one route in file router or item router whereever we want that will generate the signed url and we can show the preview of it and also use that as thumbnail..
+  * now *keep in mind for supabse everything like image,video,pdf all are just file inside the bucket so we don't need seprate route we can use same route*
+  * **now currently what we thought earlier is we will create a seprate route for signed url -- but then i just attach the signed url in the item router where we are fetching all file/folder inside a folder and now we have singed url for all types of files---**
+  * *but the problem is for images its staright forward to show the image* but for *pdf, video* we can't just load the whole video or pdf -- it will put too much load so for test i will do this but later we will create a backend service that will handel some thing like thumbnail generator for video and pdf.
+
+  * now so far we are done with showing the images pdf/video -- and now we need to focus on first functionality of when user do single click and action bar opens up - but before that we need to fix this functionality that when user double click it should open the file /folder now we have the signed url so its super easy to preview them on double click.
+  * okey *now for pdf the preview is browser defualt one and i want a custom one so for this* we can use **react-pdf** `npm install react-pdf`
+  * now preview is done - we are left with -- action bar functionality,and right click menue functionality.
+
 * ## (7) Modals -- one by one
