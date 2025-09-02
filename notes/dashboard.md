@@ -82,3 +82,12 @@
   * this upload file component -- responsible for two thing -- one is upload file directly wit hthe button second is upload file using drag and drop.
 
   * *now the confusion is thsi drag and drop and upload file is coming when user will click the starrred/recent/trash tabs so we need to stop this so that it won't be visible there* for this we use activesection state in the dasboard page becsuse we will know when user will click theese tabs..
+
+* ## (6) ItemGrid.jsx
+
+  * this component is mainly responsible for showing the file/folder(items).second thing it will also handel when user will do single click then it will show a action bar dynamically just like google -- (add those functionality later) and when user do double click then open file/folder and when user do right click then open a menue just like google -- (some functionality are not working properly -- fix those)
+  * **ahh one small thing-- when i do right click on any file/folder this action bar still open -- but i want this action bar open only on left click not on right click but we will do it later (once we are done with mvp)**
+  * okey there is a error in re-name when user do re-name -- the backend recives new name as undefine so we need to check.
+  * trash and download are working but rest are not so we will do it also.
+
+* ## (7) Modals -- one by one
