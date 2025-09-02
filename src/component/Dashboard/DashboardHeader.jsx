@@ -2,7 +2,7 @@
 import { Search, Upload, List, Grid3X3 } from "lucide-react";
 
 function DashboardHeader(props) {
-    const { searchQuery, onSearchChange, viewMode, onViewModeToggle, onNewClick } = props;
+    const { searchQuery, onSearchChange, onSearchKeyDown, viewMode, onViewModeToggle, onNewClick } = props;
 
     function handleSearchChange(event) {
         onSearchChange(event.target.value);
@@ -22,6 +22,7 @@ function DashboardHeader(props) {
                     placeholder="Search in Drive"
                     value={searchQuery}
                     onChange={handleSearchChange}
+                    onKeyDown={onSearchKeyDown}
                     className="w-full pl-10 pr-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
