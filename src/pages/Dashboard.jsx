@@ -329,8 +329,8 @@ function Dashboard() {
     const [confirmDelete, setConfirmDelete] = useState(null);
 
 
-    //Todo => an api call for search since dashboard header only update the searchQuery state so based on this we need to call our search api -- // GET /api/search?query=&type=&parentId=&limit=&offset= ====>  searchRouter.get('/', authMiddleware, searchItemsController);
     
+    // Sidebar -- api cals logic
     const fetchItems = useCallback(async function () {
         try {
             setLoading(true);
@@ -402,11 +402,42 @@ function Dashboard() {
             navigate("/");
             return;
         } else {
-            // shared-with-me / trash etc → flat lists (no folder nav)
+            // shared-with-me / trash etc - flat lists (no folder nav)
             setCurrentFolderId(null);
             setBreadcrumbs([{ id: null, name: sectionId }]);
         }
     }
+
+    //Todo => an api call for search since dashboard header only update the searchQuery state so based on this we need to call our search api -- // GET /api/search?query=&type=&parentId=&limit=&offset= ====>  searchRouter.get('/', authMiddleware, searchItemsController);
+
+    // --- search bar logicc ---
+    useEffect(function () {
+        async function performSearch() {
+            try {
+                if (!searchQuery || searchQuery.trim() === "") {
+                    // if search box is cleared → reload normal items
+                    fetchItems();
+                    return;
+                }
+
+                setLoading(true);
+                const res = await api.get("/search", {
+                    params: { query: searchQuery }
+                });
+                console.log("data of search api is : ",res);
+                setItems(res.data.data || []);
+            } catch (error) {
+                console.error("Error in search:", error);
+                setItems([]);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        performSearch();
+    }, [searchQuery, fetchItems]);
+
+    
 
     function handleNavigate(folderId) {
         if (folderId === null) {
@@ -671,3 +702,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
