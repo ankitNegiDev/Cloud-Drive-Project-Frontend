@@ -305,6 +305,12 @@ function ItemGrid({
     };
 
     if (viewMode === "list") {
+        // Ensure folders come first
+        const sortedItems = [...items].sort((a, b) => {
+            if (a.type === b.type) return 0;
+            return a.type === "folder" ? -1 : 1;
+        });
+
         return (
             <div className="bg-gray-800 rounded-lg p-2 relative">
                 <div className="grid grid-cols-5 gap-4 p-2 font-medium text-gray-300 border-b border-gray-700 text-sm">
@@ -314,7 +320,7 @@ function ItemGrid({
                     <div>Size</div>
                     <div>Type</div>
                 </div>
-                {items.map((item) => (
+                {sortedItems.map((item) => (
                     <div
                         key={item.id}
                         className={`item-card grid grid-cols-5 gap-4 p-2 cursor-pointer hover:bg-gray-700 transition text-sm ${selectedItems.some((x) => x.id === item.id) ? "bg-gray-700" : ""
