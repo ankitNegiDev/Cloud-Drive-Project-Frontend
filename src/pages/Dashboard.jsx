@@ -32,6 +32,7 @@ import {
     Link,
     MoreVertical,
 } from "lucide-react";
+import ShareModal from "../component/Dashboard/ShareModal";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -62,6 +63,10 @@ function Dashboard() {
 
     // this state is for selecting the file/folder
     const [selectedItems, setSelectedItems] = useState([]);
+
+    // this state is for sharing
+    const [shareItem, setShareItem] = useState(null);
+
 
 
     // action modals
@@ -487,9 +492,15 @@ function Dashboard() {
                         </span>
 
                         {/* Action icons */}
-                        <button className="hover:text-white transition" title="Share">
+                        {/* share */}
+                        <button
+                            onClick={() => setShareItem(selectedItems[0])}
+                            className="hover:text-white transition cursor-pointer"
+                            title="Share"
+                        >
                             <UserPlus size={20} />
                         </button>
+
                         <button
                             onClick={() => downloadFile(selectedItems[0])}
                             className="hover:text-white transition"
@@ -629,6 +640,14 @@ function Dashboard() {
                     setConfirmDelete(null);
                 }}
             />
+
+            {/* share modal */}
+            <ShareModal
+                item={shareItem}
+                isOpen={!!shareItem}
+                onClose={() => setShareItem(null)}
+            />
+
         </div>
     );
 }
