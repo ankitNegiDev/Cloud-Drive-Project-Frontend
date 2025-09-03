@@ -101,13 +101,16 @@ export default function ShareModal({ item, isOpen, onClose }) {
     async function handleAddUser(email) {
         try {
             console.log("Adding restricted share for email:", email);
+
+            // calling our api for restricted sahre 
             const res = await api.post(`/shares/restricted/${item.id}`, {
                 email,
                 role: "viewer",
             });
             console.log("Response of adding user:", res);
 
-            setSharedUsers([...sharedUsers, res.data.user]);
+            setSharedUsers([...sharedUsers, res.data.data]);
+
             toast.success(`Shared with ${email}`);
         } catch (err) {
             console.error("Error adding user:", err);
@@ -153,31 +156,50 @@ export default function ShareModal({ item, isOpen, onClose }) {
                         <Users size={18} className="mr-2 text-blue-400" />
                         Restricted Sharing
                     </h3>
+
                     <label className="block text-sm text-gray-300 mb-2">
                         Share with specific people
                     </label>
-                    <input
-                        type="email"
-                        placeholder="Enter email and press Enter"
-                        className="w-full px-3 py-2 rounded bg-gray-700 text-white text-sm"
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                e.preventDefault();
-                                if (e.target.value.trim()) {
-                                    handleAddUser(e.target.value.trim());
-                                    e.target.value = "";
+
+                    <div className="flex space-x-2">
+                        <input
+                            type="email"
+                            placeholder="Enter email"
+                            className="flex-1 px-3 py-2 rounded bg-gray-700 text-white text-sm"
+                            id="share-email"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    const input = e.target;
+                                    if (input.value.trim()) {
+                                        handleAddUser(input.value.trim());
+                                        input.value = "";
+                                    }
                                 }
-                            }
-                        }}
-                    />
-                    <ul className="mt-3 space-y-1 text-sm">
+                            }}
+                        />
+                        <button
+                            onClick={() => {
+                                const input = document.getElementById("share-email");
+                                if (input.value.trim()) {
+                                    handleAddUser(input.value.trim());
+                                    input.value = "";
+                                }
+                            }}
+                            className="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-500 text-sm"
+                        >
+                            Add
+                        </button>
+                    </div>
+
+                    <ul className="mt-4 space-y-2 text-sm">
                         {sharedUsers.length > 0 ? (
                             sharedUsers.map((u, i) => (
                                 <li
                                     key={i}
-                                    className="flex justify-between items-center bg-gray-700 px-2 py-1 rounded"
+                                    className="flex justify-between items-center bg-gray-700 px-3 py-2 rounded"
                                 >
-                                    <span>{u.email}</span>
+                                    <span>{u?.shared_email || "Unknown email"}</span>
                                     <button
                                         onClick={() => handleRemoveUser(u.id)}
                                         className="text-red-400 hover:text-red-200"
@@ -187,15 +209,16 @@ export default function ShareModal({ item, isOpen, onClose }) {
                                 </li>
                             ))
                         ) : (
-                            <li className="text-gray-400 italic">
-                                No users have access yet.
-                            </li>
+                            <li className="text-gray-400 italic">No users have access yet.</li>
                         )}
                     </ul>
-                    <p className="text-gray-400 text-xs mt-2">
-                        Only these users will be able to access this file when logged in.
+
+
+                    <p className="text-gray-400 text-xs mt-3">
+                        Only added users will be able to access this file (role: viewer by default).
                     </p>
                 </div>
+
 
                 {/* Public Sharing Section */}
                 <div>
