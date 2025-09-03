@@ -107,7 +107,7 @@ api.interceptors.response.use(
                 // window.location.href = "/login";
                 setTimeout(function callback(){
                     window.location.href='/login';
-                },100000);
+                },3000);
 
             } else if (status >= 400 && status < 500) {
                 // all client errors
