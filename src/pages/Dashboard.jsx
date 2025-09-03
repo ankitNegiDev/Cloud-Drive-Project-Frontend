@@ -67,6 +67,8 @@ function Dashboard() {
     // this state is for sharing
     const [shareItem, setShareItem] = useState(null);
 
+    // this state is for error --- becasue supbase gives error randomly -- when i call to generate a signed url -- its not my code problem its supabase problem that it failed to generate the signed url.
+    const [error, setError] = useState(null);
 
 
     // action modals
@@ -91,16 +93,53 @@ function Dashboard() {
                 });
 
                 console.log("response of get api for items and checking signed url : ",res);
+                setItems(res?.data?.data || []);
+
 
             } else if (activeSection === "shared-with-me") {
                 //shared route
                 res = await api.get("/shares/shared-with-me");
                 console.log("response of shared with me api is : ", res);
+                const sharedItems = res.data.data || [];
+
+                // it tracks for when supbase failed to generate the singed url
+                let hasError = false;
+
+                const itemsWithUrl = [];
+
+                // Looping through each shared item and fetch signed URL
+                for (let i = 0; i < sharedItems.length; i++) {
+                    const item = sharedItems[i];
+
+                    try {
+                        const shareRes = await api.get(`/shares/restricted/${item.id}`);
+                        console.log("response of restricted share singed url is : ",shareRes);
+                        itemsWithUrl.push({
+                            ...item,
+                            signedUrl: shareRes.data.data?.signedUrl // signed URL returned by controller
+                        });
+                    } catch (err) {
+                        console.error(`Error fetching signed URL for share ${item.id}:`, err);
+                        hasError = true;
+                        itemsWithUrl.push(item); // fallback: show item without URL
+                    }
+                }
+
+                console.log("items with url is : ",itemsWithUrl);
+                setItems(itemsWithUrl);
+
+                if (hasError) {
+                    setError("Sorry some item might failed to load to preview because on the backend supbase failed to generate the signed url this is not my code issue . supabase randomly fails whenever i generate the signed url either is on showing the avatar image or here");
+                } else {
+                    setError(null);
+                }
 
             } else if (activeSection === "trash") {
                 // trash route
                 res = await api.get("/trash");
                 console.log("response of trash api is : ", res);
+                setItems(res?.data?.data || []);
+
 
             } else if (activeSection === "recent") {
                 //todo => future API
@@ -116,7 +155,7 @@ function Dashboard() {
                 return;
             }
 
-            setItems(res?.data?.data || []);
+            // setItems(res?.data?.data || []);
         } catch (error) {
             console.error("Error fetching items:", error);
             setItems([]);
@@ -562,6 +601,8 @@ function Dashboard() {
                         </FileUpload>
                     )}
 
+
+
                     {loading ? (
                         <div className="flex justify-center items-center h-40 text-gray-400">
                             Loading...
@@ -569,24 +610,30 @@ function Dashboard() {
                     ) : items.length === 0 ? (
                         <p className="text-gray-500">No files or folders here.</p>
                     ) : (
-                        // <ItemGrid
-                        //     items={items}
-                        //     viewMode={viewMode}
-                        //     onItemClick={handleItemClick}
-                        //     onItemAction={handleItemAction}
-                        // />
-                        <ItemGrid
-                            items={items}
-                            viewMode={viewMode}
-                            selectedItems={selectedItems}  
-                            onItemClick={handleItemClick}
-                            onItemDoubleClick={handleItemDoubleClick}
-                            onItemAction={handleItemAction} 
-                        />
+                        <>
+                            {error && (
+                                        <div className="bg-red-700 text-white px-6 py-4 rounded-xl mb-6 max-w-4xl mx-auto text-left shadow-xl border-l-4 border-red-800 break-words">
+                                            <strong className="block mb-2 text-lg font-semibold">⚠️ Warning:</strong>
+                                            <p className="text-sm mb-2 leading-relaxed">{error}</p>
+                                            <p className="text-sm italic text-gray-200">You can logout and login again, I hope it will work.</p>
+                                        </div>
 
 
 
+                            )}
+                            <ItemGrid
+                                items={items}
+                                viewMode={viewMode}
+                                selectedItems={selectedItems}
+                                onItemClick={handleItemClick}
+                                onItemDoubleClick={handleItemDoubleClick}
+                                onItemAction={handleItemAction}
+                            />
+                        </>
                     )}
+
+
+                    
                 </div>
             </div>
 
